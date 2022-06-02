@@ -22,4 +22,4 @@ I'm realizing is not very smart).
 ## Resources
 
 - [Canvas API](https://canvasapi.readthedocs.io/en/stable/getting-started.html)
-- [Python Markdown][https://python-markdown.github.io/]
+- [Python Markdown](https://python-markdown.github.io/)
