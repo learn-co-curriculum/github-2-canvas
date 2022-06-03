@@ -16,7 +16,7 @@ def say_hello():
 
     # Instantiate Canvas object with environment variables
     canvas = Canvas(CANVAS_API_PATH, CANVAS_API_KEY)
-    print(canvas.get_course(sys.argv[2]))
+    print('Hello from ' + str(canvas.get_course(sys.argv[2])))
 
 def convert_to_html():
     '''
@@ -29,9 +29,13 @@ def convert_to_html():
     md = markdown.Markdown()
 
     # Parse user input (if necessary) to get Markdown file name
-    md_filename = sys.argv[2].split('/')[-1]
-    assert re.match('^[\w\-. ]+.md$', md_filename), \
-        "Input must be valid Markdown filename"
+    if len(sys.argv) > 2:
+        md_filename = sys.argv[2].split('/')[-1]
+        assert re.match('^[\w\-. ]+.md$', md_filename), \
+            "Input must be valid Markdown filename"
+    else:
+        md_filename = "README.md"
+
     # Generate name for new HTML file
     html_filename = md_filename.split('.')[0] + '.html'
 
@@ -49,6 +53,10 @@ def convert_to_html():
     return html_filename
 
 def create_lesson():
+    '''
+    Create a Canvas lesson using a README.md file.
+    '''
+
     html_filename = convert_to_html()
 
 # Control flow
