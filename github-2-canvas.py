@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from bs4 import BeautifulSoup
 from canvasapi import Canvas
 import markdown
 import os
@@ -8,6 +9,9 @@ import sys
 
 CANVAS_API_KEY = os.environ['CANVAS_API_KEY']
 CANVAS_API_PATH = os.environ['CANVAS_API_PATH'].replace('/api/v1','')
+
+MD_FILENAME = 'README.md'
+HTML_FILENAME = 'README.html'
 
 def say_hello():
     '''
@@ -28,16 +32,10 @@ def convert_to_html():
     # Instantiate a markdown object to be used for conversion to HTML
     md = markdown.Markdown()
 
-    # Parse user input (if necessary) to get Markdown file name
-    if len(sys.argv) > 2:
-        md_filename = sys.argv[2].split('/')[-1]
-        assert re.match('^[\w\-. ]+.md$', md_filename), \
-            "Input must be valid Markdown filename"
-    else:
-        md_filename = "README.md"
+    md_filename = sys.argv[2]
 
     # Generate name for new HTML file
-    html_filename = md_filename.split('.')[0] + '.html'
+    html_filename = 'README.html'
 
     # Open Markdown, convert with md, close file
     md_file = open(md_filename)
@@ -49,15 +47,24 @@ def convert_to_html():
     html_file.write(html)
     html_file.close()
 
-    # Return filename if other functions need it
-    return html_filename
-
 def create_lesson():
     '''
     Create a Canvas lesson using a README.md file.
     '''
 
-    html_filename = convert_to_html()
+    convert_to_html()
+    canvas = Canvas(CANVAS_API_PATH, CANVAS_API_KEY)
+
+    html = open(HTML_FILENAME, 'r')
+    bs = BeautifulSoup(html, 'html.parser')
+    title = bs.select('h1')[0].text.strip()
+    bs.select_one('h1').decompose()
+    
+    course = canvas.get_course('5935')
+    page = {'title': title,
+            'body': bs.prettify()}
+
+    course.create_page(page)
 
 # Control flow
 if sys.argv[1] == 'hello':
@@ -67,4 +74,5 @@ elif sys.argv[1] == 'convert':
     convert_to_html()
 
 elif sys.argv[1] == 'create':
-    pass
+    create_lesson()
+    os.remove(HTML_FILENAME)

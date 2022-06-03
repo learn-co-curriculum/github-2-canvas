@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 canvasapi = "==2.2.0"
 Markdown = "==3.3.7"
+requests = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 
