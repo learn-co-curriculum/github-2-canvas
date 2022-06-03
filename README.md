@@ -13,11 +13,19 @@ taken time out of my first build week to rewrite it in Python.
 github-2-canvas is still very much under construction, but the functions and
 details will be added in as I complete them.
 
+## hello
+
+Connect to Canvas via canvasapi Python package. Return evidence of connection
+
 ## convert
 
 Take command line input and convert a markdown file into an HTML file. This
 HTML file is saved in the directory from which the command was executed (which
 I'm realizing is not very smart).
+
+## create
+
+Does nothing.
 
 ## Resources
 
