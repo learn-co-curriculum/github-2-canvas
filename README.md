@@ -25,7 +25,9 @@ I'm realizing is not very smart).
 
 ## create
 
-Does nothing.
+Creates Page (only pages at this point) using the following syntax:
+
+_python github-2-canvas.py_ \[create\] \[path/to/file.md\] \[course_id\]
 
 ## Resources
 

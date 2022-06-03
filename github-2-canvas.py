@@ -49,7 +49,9 @@ def convert_to_html():
 
 def create_lesson():
     '''
-    Create a Canvas lesson using a README.md file.
+    Creates Page (only pages at this point) using the following syntax:
+
+    python github-2-canvas.py [create] [path/to/file.md] [course_id]
     '''
 
     convert_to_html()
@@ -60,7 +62,8 @@ def create_lesson():
     title = bs.select('h1')[0].text.strip()
     bs.select_one('h1').decompose()
     
-    course = canvas.get_course('5935')
+    course_id = sys.argv[3]
+    course = canvas.get_course(course_id)
     page = {'title': title,
             'body': bs.prettify()}
 
