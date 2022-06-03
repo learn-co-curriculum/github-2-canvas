@@ -1,12 +1,22 @@
 #!/usr/bin/env python3
 
+from canvasapi import Canvas
 import markdown
 import os
 import re
 import sys
 
 CANVAS_API_KEY = os.environ['CANVAS_API_KEY']
-CANVAS_API_PATH = os.environ['CANVAS_API_PATH']
+CANVAS_API_PATH = os.environ['CANVAS_API_PATH'].replace('/api/v1','')
+
+def say_hello():
+    '''
+    Attempt to connect to Canvas.
+    '''
+
+    # Instantiate Canvas object with environment variables
+    canvas = Canvas(CANVAS_API_PATH, CANVAS_API_KEY)
+    print(canvas.get_course(sys.argv[2]))
 
 def convert_to_html():
     '''
@@ -42,7 +52,10 @@ def create_lesson():
     html_filename = convert_to_html()
 
 # Control flow
-if sys.argv[1] == 'convert':
+if sys.argv[1] == 'hello':
+    say_hello()
+
+elif sys.argv[1] == 'convert':
     convert_to_html()
 
 elif sys.argv[1] == 'create':
