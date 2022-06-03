@@ -10,7 +10,6 @@ import sys
 CANVAS_API_KEY = os.environ['CANVAS_API_KEY']
 CANVAS_API_PATH = os.environ['CANVAS_API_PATH'].replace('/api/v1','')
 
-MD_FILENAME = 'README.md'
 HTML_FILENAME = 'README.html'
 
 def say_hello():
@@ -33,6 +32,8 @@ def convert_to_html():
     md = markdown.Markdown()
 
     md_filename = sys.argv[2]
+    assert re.match('^[\w\-. ]+.md$', md_filename), \
+        "Input must be valid Markdown filename"
 
     # Generate name for new HTML file
     html_filename = 'README.html'
