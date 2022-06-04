@@ -10,9 +10,9 @@ import sys
 CANVAS_API_KEY = os.environ['CANVAS_API_KEY']
 CANVAS_API_URL = os.environ['CANVAS_API_URL']
 
-def say_hello(course_id):
+def hello(course_id):
     '''
-    say_hello allows users to confirm that they can connect to the Canvas
+    hello allows users to confirm that they can connect to the Canvas
     course that they're interested in modifying.
 
     Format for command line input is as follows:
@@ -24,11 +24,15 @@ def say_hello(course_id):
     canvas = Canvas(CANVAS_API_URL, CANVAS_API_KEY)
     print('Hello from ' + str(canvas.get_course(course_id)))
 
-def convert_to_html(md_filename):
+def convert(md_filename):
     '''
-    Take command line input and convert a markdown file into an HTML file.
-    This HTML file is saved in the directory from which the command was
-    executed (which I'm realizing is not very smart).
+    convert allows users to convert their markdown code to HTML.
+
+    Format for command line input is as follows:
+
+    python github-2-canvas convert [md_filename]
+
+    convert returns the absolute path of the newly created HTML file.
     '''
 
     # Instantiate a markdown object to be used for conversion to HTML
@@ -50,14 +54,19 @@ def convert_to_html(md_filename):
 
     return html_filename
 
-def create_lesson():
+def create():
     '''
-    Creates Page (only pages at this point) using the following syntax:
+    create allows users to create new pages inside of their Canvas course.
 
-    python github-2-canvas.py [create] [path/to/file.md] [course_id]
+    Format for command line input is as follows:
+
+    python github-2-canvas.py create [md_filename] [course_id]
+
+    create returns the absolute path of the newly created HTML file so that it
+    may be destroyed after a new page is created.
     '''
 
-    html_filename = convert_to_html()
+    html_filename = convert()
     canvas = Canvas(CANVAS_API_URL, CANVAS_API_KEY)
 
     html = open(html_filename, 'r')
@@ -76,11 +85,11 @@ def create_lesson():
 
 # Control flow
 if sys.argv[1] == 'hello':
-    say_hello(sys.argv[2])
+    hello(sys.argv[2])
 
 elif sys.argv[1] == 'convert':
-    convert_to_html(sys.argv[2])
+    convert(sys.argv[2])
 
 elif sys.argv[1] == 'create':
-    html_filename = create_lesson()
+    html_filename = create()
     os.remove(html_filename)
