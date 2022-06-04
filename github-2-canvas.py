@@ -12,8 +12,8 @@ CANVAS_API_URL = os.environ['CANVAS_API_URL']
 
 def hello(course_id):
     '''
-    hello allows users to confirm that they can connect to the Canvas
-    course that they're interested in modifying.
+    hello allows users to confirm that they can connect to the Canvas course
+    that they're interested in modifying.
 
     Format for command line input is as follows:
 
@@ -52,6 +52,7 @@ def convert(md_filename):
     html_file.write(html)
     html_file.close()
 
+    # Return HTML filename so that it may be used by other functions
     return html_filename
 
 def create():
@@ -66,21 +67,28 @@ def create():
     may be destroyed after a new page is created.
     '''
 
+    # Convert markdown to HTML and store HTML filename
     html_filename = convert()
+
+    # Connect to Canvas API
     canvas = Canvas(CANVAS_API_URL, CANVAS_API_KEY)
 
+    # Open HTML file to separate title and body
     html = open(html_filename, 'r')
     bs = BeautifulSoup(html, 'html.parser')
     title = bs.select('h1')[0].text.strip()
     bs.select_one('h1').decompose()
     
+    # Retrieve Canvas course
     course_id = sys.argv[3]
     course = canvas.get_course(course_id)
+
+    # Create course
     page = {'title': title,
             'body': bs.prettify()}
-
     course.create_page(page)
 
+    # Return HTML filename so that the unused file can be destroyed
     return html_filename
 
 # Control flow
