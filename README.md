@@ -15,7 +15,12 @@ details will be added in as I complete them.
 
 ## hello
 
-Connect to Canvas via canvasapi Python package. Return evidence of connection
+say_hello allows users to confirm that they can connect to the Canvas course
+that they're interested in modifying.
+
+Format for command line input is as follows:
+
+python github-2-canvas hello \[course_id\]
 
 ## convert
 
